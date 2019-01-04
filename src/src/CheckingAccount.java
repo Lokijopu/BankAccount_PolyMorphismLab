@@ -81,17 +81,12 @@ public class CheckingAccount extends BankAccount{
 			}
 		}
 		catch (IllegalArgumentException e) {
-			if (this.getBalance() < amt + TRANSACTION_FEE) {
+			if (this.getBalance() < amt + TRANSACTION_FEE || (numTransactions >= FREE_TRANS) || (!this.getName().equals(other.getName()))) {
 				throw new IllegalArgumentException("Transaction is not allowed to occur IllegalArgumentException");
 			}
 		}
 		catch (NullPointerException e) {
 			throw new NullPointerException("NullPointerException has occurred");
-		}
-		catch (Exception e) {
-			if (numTransactions >= FREE_TRANS) {
-				System.out.println("Transaction not authorized; no transactions can be issued.");
-			}
 		}
 	}
 	public void endOfMonthUpdate() {

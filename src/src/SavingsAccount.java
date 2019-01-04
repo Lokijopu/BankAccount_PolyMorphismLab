@@ -24,17 +24,37 @@ public class SavingsAccount extends BankAccount{
 	
 	public void withdraw(double amt) {
 		try {
-			if (this.getBalance() > amt) {
+			if (this.getBalance() - amt >= MIN_BAL) {
 				this.withdraw(amt);
+			} else if (this.getBalance() - amt < MIN_BAL && this.getBalance() - amt >= MIN_BAL_FEE) {
+				this.withdraw(amt);
+				this.withdraw(MIN_BAL_FEE);
+			}
 		}
+		catch (IllegalArgumentException e) {
+			if (this.getBalance() <= amt + MIN_BAL_FEE) {
+			throw new IllegalArgumentException("Transaction not authorized; IllegalArgumentException");
+			}
 		}
-		catch (IllegalArgumentException e){
-			
+		catch (NullPointerException e) {
+			throw new NullPointerException("NullPointerException");
 		}
 	}
 	
 	public void transfer(BankAccount other, double amt) {
-		
+		try {
+			if (this.getName().equals(other.getName()) && this.getBalance() >= amt) {
+				this.transfer(other, amt);
+			}
+		}
+		catch (IllegalArgumentException e) {
+			if (!this.getName().equals(other.getName()) || (this.getBalance() < amt)) {
+				throw new IllegalArgumentException("Transaction is not allowed to occur IllegalArgumentException");
+			}
+		}
+		catch (NullPointerException e) {
+			throw new NullPointerException("NullPointerException");
+		}
 	}
 	
 	public void addInterest() {
